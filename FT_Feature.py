@@ -4,14 +4,14 @@ from scipy.stats import entropy
 import os
 
 # === 步驟 1：讀取傅立葉轉換後的 CSV（輸入）===
-input_path = "output_fft_segments\\下坡\\fft_下坡.csv"  # ← 輸入檔案名稱
+input_path = "output_fft_segments\\加速\\fft_加速.csv"  # ← 輸入檔案名稱
 
 # 使用 os.getcwd() + 多層資料夾結構
 output_folder = os.path.join(os.getcwd(), "output_features", "fft")  # ⬅️ 可以自訂資料夾結構
 os.makedirs(output_folder, exist_ok=True)  # 自動建立資料夾（如果不存在）
 
 # 最終輸出檔案位置
-output_path = os.path.join(output_folder, "fft_下坡_特徵.csv")
+output_path = os.path.join(output_folder, "fft_加速_特徵.csv")
 
 # 驗證輸入檔案是否存在
 if not os.path.exists(input_path):

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # === 基本設定 ===
-file_path     = "C:\\Users\\User\\Desktop\\自行車\\左轉_右轉_訓練集.csv"  # ← 請確認路徑正確
+file_path     = "C:\\Users\\User\\Desktop\\電輔車\\上坡.xlsx"  # ← 請確認路徑正確
 sheet_name    = 0       # 只在讀 Excel 時會用到
 sampling_rate = 200     # Hz，若感測器為 100Hz，可改為 100
 
@@ -54,11 +54,11 @@ for label, group in df.groupby(label_column):
 # === 輸出結果 ===
 
 # 🔧 建立輸出資料夾（例如 ./output_fft/左轉_右轉）
-output_dir = os.path.join(os.getcwd(), "output_fft", "左轉_右轉")
+output_dir = os.path.join(os.getcwd(), "output_fft", "上坡")
 os.makedirs(output_dir, exist_ok=True)
 
 # 🔽 設定輸出檔案路徑
-output_path = os.path.join(output_dir, "fft_左轉_右轉.csv")
+output_path = os.path.join(output_dir, "fft_上坡.csv")
 
 # 寫出 CSV
 result_df = pd.DataFrame(results)

@@ -14,7 +14,7 @@ from scipy.signal import get_window, detrend, welch
 from scipy.stats import entropy
 
 # ======== 使用者只改這兩行 ========
-src = Path("C:\\Users\\User\\Desktop\\電輔車\\上坡.xlsx")  # 支援 .csv / .xlsx
+src = Path("C:\\Users\\User\\Desktop\\電輔車\\下坡.xlsx")  # 支援 .csv / .xlsx
 fs = 200                                              # 取樣頻率 Hz
 # =================================
 

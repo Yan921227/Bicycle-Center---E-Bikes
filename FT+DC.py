@@ -5,7 +5,7 @@ from pathlib import Path
 from scipy.fft import fft, fftfreq
 
 # === 參數設定 ===
-input_path = Path("C:\\Users\\User\\Desktop\\電輔車\\左轉.xlsx")  # 支援 Windows 路徑處理
+input_path = Path("C:\\Users\\User\\Desktop\\電輔車\\平路.xlsx")  # 支援 Windows 路徑處理
 segment_size = 100
 sampling_rate = 200
 dc_threshold_ratio = 0.5

@@ -121,7 +121,7 @@ def train_and_save_confusion(dataset_path, target_column: str):
 # ——— 主程式（執行入口）———
 if __name__ == "__main__":
     # ⇩⇩⇩ 設定檔案與標籤欄位 ⇩⇩⇩
-    dataset_path  = "fft_加速_減速_特徵.csv"
+    dataset_path  = "C:\\Users\\User\\py\\Bicycle_Center_E-Bikes\\training data\合併\左轉、右轉.xlsx"
     target_column = "label"
     # ⇧⇧⇧ 可依情況更改 ⇧⇧⇧
 

@@ -35,7 +35,7 @@ def get_peak_frequencies(df):
     return np.array(peak_freqs)
 
 # === ✅ 主程式執行 ===
-file_path = "output_fft_segments\\上坡\\fft_上坡.csv"  # ← 替換為你資料的實際位置
+file_path = "output_fft_segments\\下坡\\fft_下坡.csv"  # ← 替換為你資料的實際位置
 fft_df = read_file_auto_encoding(file_path)
 
 # 執行主頻分析

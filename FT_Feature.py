@@ -4,14 +4,14 @@ from scipy.stats import entropy
 import os
 
 # === 步驟 1：讀取傅立葉轉換後的 CSV（輸入）===
-input_path = "output_fft_segments\\顛簸\\fft_顛簸.csv"  # ← 輸入檔案名稱
+input_path = "output_fft_segments\\上坡\\fft_上坡.csv"  # ← 輸入檔案名稱
 
 # 使用 os.getcwd() + 多層資料夾結構
 output_folder = os.path.join(os.getcwd(), "output_features", "fft")  # ⬅️ 可以自訂資料夾結構
 os.makedirs(output_folder, exist_ok=True)  # 自動建立資料夾（如果不存在）
 
 # 最終輸出檔案位置
-output_path = os.path.join(output_folder, "fft_顛簸_特徵.csv")
+output_path = os.path.join(output_folder, "fft_上坡_特徵.csv")
 
 # 驗證輸入檔案是否存在
 if not os.path.exists(input_path):
@@ -29,7 +29,7 @@ print("📂 輸入資料已讀取，共有筆數：", len(fft_df))
 
 
 # === 步驟 2：智慧特徵擷取器定義 ===
-def smart_fft_feature_selector(df, low_freq_max=20.50, mid_freq_max=79.00, high_freq_min=137.50, top_n=3):
+def smart_fft_feature_selector(df, low_freq_max=13.00, mid_freq_max=47.00, high_freq_min=81.50, top_n=3):
     features = []
 
     for (label, axis), group in df.groupby(['label', 'axis']):

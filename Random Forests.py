@@ -120,10 +120,13 @@ def train_and_save_confusion(dataset_path, target_column: str):
 
 # ——— 主程式（執行入口）———
 if __name__ == "__main__":
-    # ⇩⇩⇩ 設定檔案與標籤欄位 ⇩⇩⇩
-    dataset_path  = "C:\\Users\\User\\py\\Bicycle_Center_E-Bikes\\training data\合併\左轉、右轉.xlsx"
-    target_column = "label"
-    # ⇧⇧⇧ 可依情況更改 ⇧⇧⇧
+    import argparse
+    parser = argparse.ArgumentParser(description="訓練 RF 並輸出結果")
+    parser.add_argument("-d", "--dataset-path", required=True,
+                        help="資料檔路徑（.csv 或 .xlsx）")
+    parser.add_argument("-t", "--target-column", required=True,
+                        help="標籤欄位名稱")
+    args = parser.parse_args()
 
-    train_and_save_confusion(dataset_path, target_column)
-    print("🎉 任務完成！")
+    train_and_save_confusion(args.dataset_path, args.target_column)
+

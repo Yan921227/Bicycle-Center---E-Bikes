@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 
 # === 基本設定 ===
-file_path     = "C:\\Users\\User\\Desktop\\電輔車\\右轉.xlsx"  # ← 請確認路徑正確
-sheet_name    = 0       # 只在讀 Excel 時會用到
-sampling_rate = 200     # Hz，若感測器為 100Hz，可改為 100
+file_path     = "C:\\Users\\User\\py\\Bicycle_Center_E-Bikes\\0809output_converted\\顛簸\\顛簸(全).xlsx"  # ← 改成你的檔案路徑
+sheet_name    = 0
+sampling_rate = 100  # Hz
 
 # === 依副檔名自動選擇讀檔方式 ===
 ext = os.path.splitext(file_path)[1].lower()
@@ -18,49 +18,72 @@ elif ext in ('.xls', '.xlsx'):
 else:
     raise ValueError(f"不支援的檔案格式：{ext}，僅接受 .csv / .xls / .xlsx")
 
-# === 正確對應感測器欄位名稱 ===
-sensor_columns = ['AccelX', 'AccelY', 'AccelZ', 'GyroX', 'GyroY', 'GyroZ']
+# === 欄位設定（已把 Pitch / Roll 納入）===
+sensor_columns = ['AccelX', 'AccelY', 'AccelZ', 'GyroX', 'GyroY', 'GyroZ', 'Pitch', 'Roll']
 label_column   = 'Label'
 
-# === 初始化儲存 FFT 結果的列表 ===
-results = []
+# 欄位檢查
+missing = [c for c in [label_column] + sensor_columns if c not in df.columns]
+if missing:
+    raise KeyError(f"找不到下列欄位：{missing}")
 
-# === 對每個 Label 群組進行 FFT 分析 ===
+# === 初始化結果 ===
+rows = []
+
+# === 依 Label 分組做 FFT（去平均 + Hann 窗 + rFFT）===
 for label, group in df.groupby(label_column):
     print(f'處理中：Label = {label}，共 {len(group)} 筆資料')
 
     for axis in sensor_columns:
-        data = group[axis].dropna().values
-        n = len(data)
+        data = group[axis].to_numpy(dtype=float)
+        data = data[~np.isnan(data)]
+        n = data.size
         if n < 10:
             print(f'⚠️ 跳過 {label} - {axis}，資料筆數太少：{n}')
             continue
 
-        # FFT 計算
-        fft_result = np.fft.fft(data)
-        freqs      = np.fft.fftfreq(n, d=1.0/sampling_rate)
-        amplitude  = 2.0/n * np.abs(fft_result)
+        # 角度欄位（Pitch/Roll）可做 unwrap（若原始資料沒有±180/360 跳變，這步不會改變數值）
+        if axis in ('Pitch', 'Roll'):
+            data = np.deg2rad(data)
+            data = np.unwrap(data)
+            data = np.rad2deg(data)
 
-        # 僅取正頻率
-        half_n = n // 2
-        for f, a in zip(freqs[:half_n], amplitude[:half_n]):
-            results.append({
-                'label'    : label,
-                'axis'     : axis,
-                'frequency': f,
-                'amplitude': a
-            })
+        # 去平均（移除 DC 偏移）
+        data = data - np.mean(data)
+
+        # Hann 窗
+        window = np.hanning(n)
+        data_win = data * window
+
+        # rFFT 只取非負頻率
+        fft_result = np.fft.rfft(data_win)
+        freqs = np.fft.rfftfreq(n, d=1.0/sampling_rate)
+
+        # 單邊幅度校正（coherent gain = Σwindow；DC/Nyquist 不加倍）
+        cg = window.sum()
+        amplitude = (2.0 / cg) * np.abs(fft_result)
+        amplitude[0] *= 0.5
+        if n % 2 == 0 and amplitude.size > 1:
+            amplitude[-1] *= 0.5
+
+        # 累積結果
+        rows.append(pd.DataFrame({
+            'label'    : label,
+            'axis'     : axis,
+            'frequency': freqs,
+            'amplitude': amplitude
+        }))
 
 # === 輸出結果 ===
+result_df = pd.concat(rows, ignore_index=True) if rows else pd.DataFrame(
+    columns=['label','axis','frequency','amplitude']
+)
 
-# 🔧 建立輸出資料夾（例如 ./output_fft/左轉_右轉）
-output_dir = os.path.join(os.getcwd(), "output_fft", "右轉")
+# 以來源檔名建立輸出資料夾與檔名
+basename   = os.path.splitext(os.path.basename(file_path))[0]
+output_dir = os.path.join(os.getcwd(), "0809output_fft", basename)
 os.makedirs(output_dir, exist_ok=True)
+output_path = os.path.join(output_dir, f"fft_{basename}.csv")
 
-# 🔽 設定輸出檔案路徑
-output_path = os.path.join(output_dir, "fft_右轉.csv")
-
-# 寫出 CSV
-result_df = pd.DataFrame(results)
 result_df.to_csv(output_path, index=False, encoding='utf-8-sig')
 print("✅ FFT 分析完成，結果已儲存為：", output_path)

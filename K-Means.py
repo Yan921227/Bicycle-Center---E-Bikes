@@ -12,7 +12,7 @@ plt.rcParams["font.family"] = ["Microsoft JhengHei"]
 plt.rcParams["axes.unicode_minus"] = False
 
 # 1. 設定資料路徑（CSV 或 Excel 皆可）
-file_path = Path("C:\\Users\\User\\Desktop\\自行車\\左轉_右轉_訓練集.csv")
+file_path = Path("C:\\Users\\User\\py\\Bicycle_Center_E-Bikes\\0809output_converted\\合併\\平路_顛簸.xlsx")
 
 # 2. 根據副檔名自動讀取資料
 if file_path.suffix == ".csv":
@@ -56,8 +56,8 @@ ax.grid(True)
 plt.tight_layout()
 
 # 8. 儲存圖檔至 output_cluster/plots/
-output_root = Path.cwd() / "output_cluster"
-plots_dir = output_root / "plots"
+output_root = Path.cwd() / "0809output_cluster"
+plots_dir = output_root / "0809plots"
 plots_dir.mkdir(parents=True, exist_ok=True)
 image_path = plots_dir / f'{file_path.stem}.png'
 fig.savefig(image_path, dpi=300)

@@ -12,7 +12,7 @@ plt.rcParams["font.family"] = ["Microsoft JhengHei"]
 plt.rcParams["axes.unicode_minus"] = False
 
 # ———— 1. 資料來源檔案路徑 ————
-excel_path = Path("C:\\Users\\User\\py\\Bicycle_Center_E-Bikes\\0809output_converted\\合併\\平路_顛簸.xlsx")
+excel_path = Path("C:\\Users\\User\\Desktop\\已區分\\訓練集\\1018_全數據_訓練.xlsx")
 
 # ———— 2. 自動依副檔名選擇讀檔方式 ————
 if excel_path.suffix == ".csv":
@@ -38,20 +38,20 @@ X_pca = pca.fit_transform(X_std)
 df["PC1"], df["PC2"], df["PC3"] = X_pca[:, 0], X_pca[:, 1], X_pca[:, 2]
 
 # ———— 5. 建立統一的輸出資料夾 ————
-output_root = Path.cwd() / "0809output_pca_3d"
+output_root = Path.cwd() / "1020output_pca_3d"
 plots_dir = output_root / "plots"
 plots_dir.mkdir(parents=True, exist_ok=True)
 
 # ———— 6. 定義 Label 顏色對應 ————
 colors = {
-    # "上坡": "purple",
-    # "下坡": "brown",
-    "平路": "red",
-    "顛簸": "gray",
-    # "左轉": "green",
-    # "右轉": "blue",
-    # "加速": "orange",
-    # "減速": "pink",
+      "上坡": "purple",
+      "下坡": "brown",
+      "平路": "red",
+      "顛簸": "gray",
+      "左轉": "green",
+      "右轉": "blue",
+      "加速": "orange",
+      "減速": "pink",
 }
 
 # ———— 7. 繪製 3D PCA 散佈圖 ————

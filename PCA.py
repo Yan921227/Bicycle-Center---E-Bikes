@@ -11,7 +11,7 @@ plt.rcParams["font.family"] = ["Microsoft JhengHei"]
 plt.rcParams["axes.unicode_minus"] = False
 
 # ———— 1. 資料檔案路徑（請確認副檔名正確）————
-excel_path = Path("C:\\Users\\User\\py\\Bicycle_Center_E-Bikes\\0809output_converted\\合併\\平路_顛簸.xlsx")
+excel_path = Path("C:\\Users\\User\\Desktop\\已區分\\訓練集\\1018_全數據_訓練.xlsx")
 
 # ———— 2. 讀取資料：自動判斷副檔名使用對應方式 ————
 if excel_path.suffix == ".csv":
@@ -33,7 +33,7 @@ X_pca = pca.fit_transform(X_std)
 df["PC1"], df["PC2"] = X_pca[:, 0], X_pca[:, 1]
 
 # ———— 5. 建立輸出資料夾結構 ————
-output_root = Path.cwd() / "0809output_pca"
+output_root = Path.cwd() / "1020output_pca"
 plots_dir = output_root / "plots"
 models_dir = output_root / "models"
 plots_dir.mkdir(parents=True, exist_ok=True)
@@ -41,14 +41,14 @@ models_dir.mkdir(parents=True, exist_ok=True)
 
 # ———— 6. 定義各 Label 顏色（可自行擴充）————
 colors = {
-    # "上坡": "purple",
-    # "下坡": "brown",
-    "平路": "red",
-    "顛簸": "gray",
-    # "左轉": "green",
-    # "右轉": "blue",
-    # "加速": "orange",
-    # "減速": "pink",
+      "上坡": "purple",
+      "下坡": "brown",
+     "平路": "red",
+     "顛簸": "gray",
+      "左轉": "green",
+      "右轉": "blue",
+      "加速": "orange",
+      "減速": "pink",
 }
 
 # ———— 7. 繪製 & 儲存 PCA 散佈圖 ————
@@ -75,6 +75,6 @@ plt.close()
 print(f"✔ 已將散佈圖儲存至：{scatter_file}")
 
 # ———— 8. 儲存 PCA 模型 ————
-pca_model_path = models_dir / "pca_model.pkl"
+pca_model_path = models_dir / "1018_全數據_model.pkl"
 joblib.dump(pca, pca_model_path)
 print(f"✔ PCA 模型已儲存至：{pca_model_path}")

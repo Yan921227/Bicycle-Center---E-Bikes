@@ -2,10 +2,10 @@ from pathlib import Path
 import pandas as pd
 
 # === 1. 指定要處理的 txt 資料夾 ===
-input_folder = Path("C:\\Users\\User\\Desktop\\0809自行車騎乘數據\\未分類")
+input_folder = Path("C:\\Users\\User\\Desktop\\1018自行車騎乘數據資料集\\C")
 
 # === 2. 指定統一輸出資料夾 ===
-output_folder = Path.cwd() / "0809output_converted"/"未分類"
+output_folder = Path.cwd() / "1018output_converted"/"C"
 output_folder.mkdir(parents=True, exist_ok=True)
 
 # === 3. 批次轉換 .txt 檔為 .csv，輸出至 output_converted 資料夾 ===
